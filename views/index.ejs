@@ -1,0 +1,107 @@
+<% include partials/header %>
+
+
+<div class='container'>
+    
+    <div class='ui segment'>
+        <form class="ui large form" action='/' method='post'>
+            <div class='fields'>
+                
+                <div class='two wide field fluid'>
+                    <label>Date</label>
+                    <input type='date' name='date' required value=<%= new Date().toISOString().substring(0, 10) %>>
+                </div>
+
+                <div class='three wide field fluid'>
+                    <label>Category</label>
+                    <select name='category' required>
+                        <option class='item' value='Coding / Debugging'>Coding / Debugging</option>
+                        <option class='item' value='Communication'>Communication</option>
+                        <option class='item' value='Design - Architecture'>Design - Architecture</option>
+                        <option class='item' value='Design - Detail'>Design - Detail</option>
+                        <option class='item' value='Documentation - Maintainer'>Documentation - Maintainer</option>
+                        <option class='item' value='Documentation - User'>Documentation - User</option>
+                        <option class='item' value='Documentation - Other'>Documentation - Other</option>
+                        <option class='item' value='Facilitation'>Facilitation</option>
+                        <option class='item' value='Quality - Reviews'>Quality - Reviews</option>
+                        <option class='item' value='Quality - Test Design'>Quality - Test Design</option>
+                        <option class='item' value='Quality - Testing / Metric Collection'>Quality - Testing / Metric Collection</option>
+                        <option class='item' value='Requirements Engineering'>Requirements Engineering</option>
+                        <option class='item' value='Research'>Research</option>
+                        <option class='item' value='SCM / Build Management'>SCM / Build Management</option>
+                        <option class='item' value='Team Building'>Team Building</option>
+                        <option class='item' value='Toolsmithing'>Toolsmithing</option>
+                        <option class='item' value='OTHER'>OTHER</option>
+                    </select>
+                  </div>  
+                
+                <div class='two wide field fluid'>
+                    <label>Hours</label>
+                    <input type='number' required name='hours'>
+                </div>
+                
+                <div class='nine wide field fluid'>
+                    <label>Description</label>
+                    <input type='text' name='description'>
+                </div>
+                
+                
+            </div>
+            <button class='ui icon primary button fluid' type='submit'>
+                <i class='plus icon'></i>
+            </button>
+        </form>
+    </div>
+    
+    <!--<form class='form grid'>-->
+    <!--    <div class='ui three wide column input icon'>-->
+    <!--        <i class='calendar icon'></i>-->
+    <!--        <input type='date' placeholder='Date' name='date'>-->
+    <!--    </div>-->
+        
+    <!--    <div class='ui three wide column input icon'>-->
+    <!--        <i class='list icon'></i>-->
+    <!--        <input type='category' placeholder='Category' name='category'>-->
+    <!--    </div>-->
+        
+    <!--    <div class='ui three wide column input icon'>-->
+    <!--        <i class='time icon'></i>-->
+    <!--        <input type='number' placeholder='Hours' name='hours'>-->
+    <!--    </div>-->
+        
+    <!--    <div class='ui six wide column input icon'>-->
+    <!--        <i class='comment icon'></i>-->
+    <!--        <input type='description' placeholder='Description' name='description'>-->
+    <!--    </div>-->
+        
+    <!--    <button class='ui icon primary button'>-->
+    <!--        <i class='plus icon'></i>-->
+    <!--    </button>-->
+    <!--</form>-->
+    
+    <div class='ui ui segment  row text-center' style='display:flex; flex-wrap: wrap'>
+        <table class='ui celled striped table'>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Category</th>
+                    <th>Hours</th>
+                    <th>Description</th>
+                </tr>
+                
+            </thead>
+            <tbody>
+                <% for(var i = 0; i < entries.length; i++) { %>
+                    <tr>
+                        <td class='collapsing'><%= entries[i].date.toDateString() %></td>
+                        <td class='collapsing'><%= entries[i].category %></td>
+                        <td class='collapsing'><%= entries[i].hours | 0 %> hours</td>
+                        <td><%= entries[i].description %></td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<% include partials/footer %>
