@@ -12,9 +12,9 @@ var logEntrySchema = new mongoose.Schema({
 });
 var Entry = mongoose.model("Entry", logEntrySchema);
 
-/* GET */
-router.get('/', function(req, res, next) {
-    Entry.find().sort('-date').find({}, function(err, entries) {
+// INDEX
+router.get('/', (req, res, next) => {
+    Entry.find().sort('-date').find({}, (err, entries) => {
         if (err) {
             res.status(err.status || 500);
             res.render('error');
@@ -25,8 +25,8 @@ router.get('/', function(req, res, next) {
     });
 });
 
-// CREATE
-router.post('/', function(req, res) {
+// NEW
+router.post('/', (req, res) => {
     var date = req.body.date;
     var category = req.body.category;
     var hours = req.body.hours;
@@ -34,7 +34,7 @@ router.post('/', function(req, res) {
     
     var newEntry = { date: date, category: category, hours: hours, description: description };
 
-    Entry.create(newEntry, function(err, newEntry) {
+    Entry.create(newEntry, (err, newEntry) => {
         if (err) {
             res.status(err.status || 500);
             res.render('error');
