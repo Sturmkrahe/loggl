@@ -47,4 +47,19 @@ router.post('/', function(req, res) {
 
 });
 
+// DESTROY
+router.delete('/:id', (req, res) => {
+    
+    Entry.findByIdAndRemove(req.params.id, (err, foundEntry) => {
+        if (err) {
+            res.status(err.status || 500);
+            res.render('error');
+        }
+        else {
+            console.log("Deleted entry: \n" + foundEntry);
+            //res.redirect("/");
+        }
+    });
+});
+
 module.exports = router;
