@@ -61,17 +61,26 @@
                     <th>Category</th>
                     <th>Hours</th>
                     <th>Description</th>
+                    <th></th>
                 </tr>
                 
             </thead>
             <tbody>
                 <% for(var i = 0; i < entries.length; i++) { %>
-                    <tr>
-                        <td class='collapsing'><%= entries[i].date.toDateString() %></td>
-                        <td class='collapsing'><%= entries[i].category %></td>
-                        <td class='collapsing'><%= entries[i].hours | 0 %> hours</td>
-                        <td><%= entries[i].description %></td>
-                    </tr>
+                    <form action='/<%= entries[i]._id %>?_method=DELETE' method='post'>
+                        <tr>
+                            <% var localizedDate = new Date(entries[i].date + ((new Date().getTimezoneOffset() / 60) * -1)); %>
+                            <td class='collapsing'><%= entries[i].date.toDateString() %></td>
+                            <td class='collapsing'><%= entries[i].category %></td>
+                            <td class='collapsing'><%= entries[i].hours | 0 %> hours</td>
+                            <td><%= entries[i].description %></td>
+                            <td class='collapsing right'>
+                                <button class='ui icon negative button fluid' type='submit'>
+                                    <i class='delete icon'></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </form>
                 <% } %>
             </tbody>
         </table>

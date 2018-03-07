@@ -13,7 +13,7 @@ var logEntrySchema = new mongoose.Schema({
 var Entry = mongoose.model("Entry", logEntrySchema);
 
 // INDEX
-router.get('/', (req, res, next) => {
+router.get('/', (req, res) => {
     Entry.find().sort('-date').find({}, (err, entries) => {
         if (err) {
             res.status(err.status || 500);
@@ -44,12 +44,10 @@ router.post('/', (req, res) => {
             res.redirect("/");
         }
     });
-
 });
 
 // DESTROY
 router.delete('/:id', (req, res) => {
-    
     Entry.findByIdAndRemove(req.params.id, (err, foundEntry) => {
         if (err) {
             res.status(err.status || 500);
@@ -57,7 +55,7 @@ router.delete('/:id', (req, res) => {
         }
         else {
             console.log("Deleted entry: \n" + foundEntry);
-            //res.redirect("/");
+            res.redirect("/");
         }
     });
 });
