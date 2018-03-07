@@ -1,5 +1,7 @@
 # Loggl
 
+Set the environment variable `DB_URL` to the URL of your MongoDB database.
+
 Run using:
     - `npm start`
 
