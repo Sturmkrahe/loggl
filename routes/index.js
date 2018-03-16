@@ -1,63 +1,43 @@
 var express = require('express');
 var router = express.Router();
-var mongoose = require('mongoose');
+var passport = require("passport");
+var User = require("../models/user");
 
-mongoose.connect(process.env.DB_URL);
-
-var logEntrySchema = new mongoose.Schema({
-    date: Date,
-    hours: Number,
-    category: String,
-    description: String
+router.get("/register", (req, res) => {
+    res.render("register");
 });
-var Entry = mongoose.model("Entry", logEntrySchema);
+
+router.post("/register", (req, res) => {
+    User.register(new User({
+        username: req.body.username
+    }), req.body.password, (err, user) => {
+        if (err) {
+            res.send(err.stack);
+        }
+
+        passport.authenticate('local')(req, res, () => {
+            res.redirect('log');
+        });
+    });
+});
+
+router.get("/login", (req, res) => {
+    res.render("login");
+});
+
+router.post("/login", passport.authenticate('local', {
+    successRedirect: '/log',
+    failureRedirect: '/login',
+}), (req, res) => {});
+
+router.get("/logout", function(req, res){
+    req.logout();
+    res.redirect("/login");
+ });
 
 // INDEX
 router.get('/', (req, res) => {
-    Entry.find().sort('-date').find({}, (err, entries) => {
-        if (err) {
-            res.status(err.status || 500);
-            res.render('error');
-        }
-        else {
-            res.render('index', { entries: entries });
-        }
-    });
-});
-
-// NEW
-router.post('/', (req, res) => {
-    var date = req.body.date;
-    var category = req.body.category;
-    var hours = req.body.hours;
-    var description = req.body.description;
-    
-    var newEntry = { date: date, category: category, hours: hours, description: description };
-
-    Entry.create(newEntry, (err, newEntry) => {
-        if (err) {
-            res.status(err.status || 500);
-            res.render('error');
-        }
-        else {
-            console.log("Created entry: \n" + newEntry);
-            res.redirect("/");
-        }
-    });
-});
-
-// DESTROY
-router.delete('/:id', (req, res) => {
-    Entry.findByIdAndRemove(req.params.id, (err, foundEntry) => {
-        if (err) {
-            res.status(err.status || 500);
-            res.render('error');
-        }
-        else {
-            console.log("Deleted entry: \n" + foundEntry);
-            res.redirect("/");
-        }
-    });
+    res.redirect('log');
 });
 
 module.exports = router;

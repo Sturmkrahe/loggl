@@ -4,7 +4,7 @@
 <div class='container'>
     
     <div class='ui segment'>
-        <form class="ui large form" action='/' method='post'>
+        <form class="ui large form" action='/log/' method='post'>
             <div class='fields'>
                 
                 <div class='two wide field fluid'>
@@ -49,6 +49,7 @@
             </div>
             <button class='ui icon primary button fluid' type='submit'>
                 <i class='plus icon'></i>
+                Log
             </button>
         </form>
     </div>
@@ -66,14 +67,14 @@
                 
             </thead>
             <tbody>
-                <% for(var i = 0; i < entries.length; i++) { %>
-                    <form action='/<%= entries[i]._id %>?_method=DELETE' method='post'>
+                <% for(var i = 0; i < logEntries.length; i++) { %>
+                    <form action='/log/<%= logEntries[i]._id %>?_method=DELETE' method='post'>
                         <tr>
-                            <% var localizedDate = new Date(entries[i].date + ((new Date().getTimezoneOffset() / 60) * -1)); %>
-                            <td class='collapsing'><%= entries[i].date.toDateString() %></td>
-                            <td class='collapsing'><%= entries[i].category %></td>
-                            <td class='collapsing'><%= entries[i].hours | 0 %> hours</td>
-                            <td><%= entries[i].description %></td>
+                            <% var localizedDate = new Date(logEntries[i].date + ((new Date().getTimezoneOffset() / 60) * -1)); %>
+                            <td class='collapsing'><%= logEntries[i].date.toDateString() %></td>
+                            <td class='collapsing'><%= logEntries[i].category %></td>
+                            <td class='collapsing'><%= logEntries[i].hours | 0 %> hours</td>
+                            <td><%= logEntries[i].description %></td>
                             <td class='collapsing right'>
                                 <button class='ui icon negative button fluid' type='submit'>
                                     <i class='delete icon'></i>

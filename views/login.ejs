@@ -1,0 +1,25 @@
+<% include partials/header %>
+
+<div class='container'>
+    
+    <div class='ui segment'>
+        <form class="ui large form " action='/login' method='post'>
+
+                <div class='four wide field fluid'>
+                    <label>Username</label>
+                    <input type='text' name='username' required placeholder="Username">
+                </div>
+
+                <div class='four wide field fluid'>
+                    <label>Password</label>
+                    <input type='password' name='password' required placeholder="Password">
+                </div>
+
+            <button class='ui icon primary button' type='submit'>
+                <i class='plus icon'></i>
+                Login
+            </button>
+        </form>
+    </div>
+
+<% include partials/footer %>
