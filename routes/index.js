@@ -30,12 +30,11 @@ router.post("/login", passport.authenticate('local', {
     failureRedirect: '/login',
 }), (req, res) => {});
 
-router.get("/logout", function(req, res){
+router.get("/logout", function (req, res) {
     req.logout();
     res.redirect("/login");
- });
+});
 
-// INDEX
 router.get('/', (req, res) => {
     res.redirect('log');
 });

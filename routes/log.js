@@ -8,15 +8,20 @@ var LogEntry = require('../models/logEntry');
 
 // INDEX
 router.get('/', middleware.isLoggedIn, (req, res) => {
-    User.findById(req.user.id, (err, user) => {
-        if (err) {
-            res.send(err.stack);
-        } else {
+    LogEntry.find({
+            creator: req.user.id
+        })
+        .sort({
+            date: 'desc'
+        })
+        .then((entries) => {
             res.render('index', {
-                logEntries: user.logEntries
+                logEntries: entries
             });
-        }
-    });
+        })
+        .catch((error) => {
+            res.send(error.stack);
+        });
 });
 
 // NEW
@@ -25,48 +30,39 @@ router.post('/', middleware.isLoggedIn, (req, res) => {
     var category = req.body.category;
     var hours = req.body.hours;
     var description = req.body.description;
+    var creator = req.user.id;
 
-    var newLogEntry = {
+    var newLogEntry = new LogEntry({
         date: date,
         category: category,
         hours: hours,
         description: description,
-    };
-
-    User.findById(req.user.id, (err, user) => {
-        if (err) {
-            res.send(err.stack);
-        } else {
-            user.logEntries.push(newLogEntry)
-            user.save(function (err) {
-                if (err) {
-                    res.send(err.stack);
-                }
-                console.log("Created entry: \n" + newLogEntry);
-                res.redirect('/');
-            });
-        }
+        creator: creator
     });
+
+    newLogEntry.save()
+        .then((entry) => {
+            console.log("Created entry: \n" + entry);
+            res.redirect('/');
+        })
+        .catch((error) => {
+            res.send(error.stack)
+        });
 });
 
 // DESTROY
 router.delete('/:id', middleware.isLoggedIn, (req, res) => {
-    User.findById(req.user.id, (err, user) => {
-        if (err) {
-            res.send(err.stack);
-        } else {
-            user.logEntries.id(req.params.id).remove();
-
-            user.save(function (err) {
-                if (err) {
-                    res.send(err.stack);
-                } else {
-                    console.log("Deleted entry: \n" + req.user.id);
-                    res.redirect("/");
-                }
-            });
-        }
-    });
+    LogEntry.findOneAndRemove({
+            _id: req.params.id,
+            creator: req.user.id
+        })
+        .then((entry) => {
+            console.log("Deleted entry: \n" + entry);
+            res.redirect("/");
+        })
+        .catch((error) => {
+            res.send(error.stack);
+        });
 });
 
 module.exports = router;
